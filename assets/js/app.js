@@ -5,37 +5,31 @@ let curs = await fetch(URL);
     curs = await curs.json();
 let countries = await fetch(URL1);
     countries = await countries.json();
-// console.log(curs);
+console.log(curs);
 let tag = document.getElementById('output');
 countries = countries.map(item => ({
     country : item.name.official,
     currency : item.currencies,
     flag : item.flags.png
  }))
-//  console.log(countries[105].currency);
+
  for (let i =0; i < countries.length; i++ ) {
     if (countries[i].currency === undefined) {
         countries[i].currency = {NON : 'no currency'};
     }
     countries[i].currency = Object.keys(countries[i].currency).join('');
 }
-// console.log(countries);
-curs = curs.map(item => ({
-    txt : item.txt,
-    cc : item.cc,
-    rate : item.rate,
-    data : countries.filter(pos => pos.currency.includes(item.cc))
-}))
-console.log (curs, curs[0].data[0].country);
-tag.innerHTML = curs.map(item =>`
-    <div class="d-flex mb-2">
-        <h5>${item.txt}</h5>
-        <h5>${item.cc}</h5>
-        <h5>${item.rate}</h5>
-        <h5>${item.data[0].country}</h5>
-        <h5>Флаги1</h5>
-    </div>    
-`).join('');
 
+tag.innerHTML = curs.map(item => `
+    <div class="d-flex gap-3 w-100 justify-content-start align-items-center border">
+         <h5 style="min-width: 10%">${item.txt}</h5>
+         <h4 style="min-width: 10%">${item.cc}</h4>
+         <h4 style="min-width: 10%">${item.rate}</h4>
+         <div class="d-flex flex-wrap gap-2 justify-content-center align-items-center">
+            ${countries.filter(pos => pos.currency.includes(item.cc)).map(counter => `
+            <img src="${counter.flag}" alt="" style="max-width: 5rem" class="p-1 border border-primary">`).join('')}
+         </div>
+    </div>
+    `).join('');
 
 
